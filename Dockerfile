@@ -161,6 +161,6 @@ COPY --from=build-setup /docker/run.sh /run.sh
 RUN chmod a+x /run.sh
 
 
-EXPOSE 8080
+EXPOSE 8080 8099
 
 CMD ["bash", "-x", "/run.sh"]
