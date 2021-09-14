@@ -1,12 +1,28 @@
 ## Docker packaging of Flow Rosetta API implementation
 
-This is a work in progress and subject to change.
+This is a work in progress and subject to change. 
 
-## Supported sporks
+## Supported Flow networks
+
+Use `Dockerfile` from a directory corresponding to chosen network.  
+
+### Canary
+
+ Name      | Lowest block | Highest block
+-----------|--------------|---------------
+Canary 8v2 | 41318422     | Live
+
+### Mainnet 
 
  Name     | Lowest block | Highest block 
 ----------|--------------|--------------
 Mainnet-5 | 12020337     | 12609236
+
+### Testnet 
+
+ Name      | Lowest block | Highest block 
+-----------|--------------|--------------
+Testnet-27 |              | Live
 
 ## Building and running
 
@@ -18,7 +34,7 @@ NOTE - Docker BuildKit support is required!
 It can be built without any extra arguments: 
 `docker build .`
 
-On first run the DPS index snapshot will be downloaded and unpacked. Since those files are large 
+On first run the DPS index snapshots and/or bootstrap data will be downloaded and unpacked. Since those files are large 
 it's advisable to provide a fixed mountpoint for running container under `/data/` path.
 
 ## Endpoints
