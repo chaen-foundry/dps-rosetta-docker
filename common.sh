@@ -15,7 +15,7 @@ function mainnet_data() {
 
   echo "Checking $MAINNET_NAME data"
   if [ ! -d "$INDEX_DIR" ]; then
-    TMP_FILE=$(mktemp)
+    TMP_FILE=$(mktemp -p "$DATA_DIR")
     wget -nv "$DOWNLOAD_URL" -O "$TMP_FILE"
     DOWNLOADED_SHA256=$(sha256sum "$TMP_FILE" | cut -d' ' -f1)
 
@@ -52,7 +52,7 @@ function live_data() {
   echo "Checking Live $NETWORK_NAME data"
 
   if [ ! -d "$INDEX_DIR" ]; then
-      TMP_FILE=$(mktemp)
+      TMP_FILE=$(mktemp -p "$DATA_DIR")
       wget -nv "$ROOT_CHECKPOINT_DOWNLOAD_URL" -O "$TMP_FILE"
       DOWNLOADED_SHA256=$(sha256sum "$TMP_FILE" | cut -d' ' -f1)
 
