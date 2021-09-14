@@ -5,9 +5,8 @@ RUN apt-get -y install cmake zip sudo git
 
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.1
 ENV FLOW_GO_BRANCH=v0.21
-ENV RESTORE_INDEX_BRANCH=master
+ENV RESTORE_INDEX_BRANCH=v1.3.2
 ENV ROSETTA_DISPATCHER_BRANCH=m4ksio/rosetta-dispatcher-server
-#ENV DPS_LIVE_BRANCH=v1.3.0
 ENV DPS_LIVE_BRANCH=m4ksio/rosetta-wait
 
 RUN mkdir /dps /docker
@@ -33,18 +32,6 @@ RUN  --mount=type=cache,target=/go/pkg/mod \
      git checkout $ROSETTA_DISPATCHER_BRANCH &&  \
      go build -o /rosetta-dispatcher-server -ldflags "-extldflags -static" ./cmd/rosetta-dispatcher-server && \
      chmod a+x /rosetta-dispatcher-server
-
-## Build Relic first to maximize caching
-#FROM build-setup AS build-relic
-#
-#RUN mkdir /build
-#WORKDIR /build
-#
-## Copy over the crypto package
-## COPY crypto ./crypto
-#
-## Build Relic (this places build artifacts in /build/relic/build)
-#RUN cd ./crypto/ && go generate
 
 #FROM build-setup AS build-mainnet3
 #
@@ -120,12 +107,8 @@ RUN  --mount=type=cache,target=/go/pkg/mod \
      go build -o /dps-live-index -tags relic -ldflags "-extldflags -static" ./cmd/flow-dps-live && \
      go build -o /app-rosetta -ldflags "-extldflags -static" ./cmd/flow-rosetta-server
 
-
-
 ## Add the statically linked binary to a distroless image
 FROM ubuntu:latest as production
-
-#RUN mkdir /app/mainnet-3 /app/mainnet-4 /app/mainnet-5 /app/mainnet-6 /app/mainnet-7 /app/mainnet-8 /app/mainnet-9
 
 RUN apt-get update
 RUN apt-get -y install supervisor wget
@@ -140,8 +123,8 @@ COPY --from=build-mainnet5 /app /bin/rosetta-mainnet-5
 COPY --from=build-mainnet6 /app /bin/rosetta-mainnet-6
 COPY --from=build-mainnet7 /app /bin/rosetta-mainnet-7
 #COPY --from=build-mainnet8 /app /bin/rosetta-mainnet-8
-COPY --from=build-live /dps-live-index /bin/dps-live-index
-COPY --from=build-live /app-rosetta /bin/rosetta-live
+#COPY --from=build-live /dps-live-index /bin/dps-live-index
+#COPY --from=build-live /app-rosetta /bin/rosetta-live
 
 RUN chmod a+x  /bin/restore-index-snapshot \
     /bin/rosetta-dispatcher-server \
@@ -149,17 +132,17 @@ RUN chmod a+x  /bin/restore-index-snapshot \
 #    /bin/rosetta-mainnet-4 \
     /bin/rosetta-mainnet-5 \
     /bin/rosetta-mainnet-6 \
-    /bin/rosetta-mainnet-7 \
+    /bin/rosetta-mainnet-7
 #    /bin/rosetta-mainnet-8 \
 #    /bin/rosetta-mainnet-9
-    /bin/dps-live-index \
-    /bin/rosetta-live 
+#    /bin/dps-live-index \
+#    /bin/rosetta-live
 
-COPY --from=build-setup /docker/supervisord.conf /supervisord.conf
-COPY --from=build-setup /docker/run.sh /run.sh
+COPY --from=build-setup /docker/mainnet/supervisord.conf /supervisord.conf
+COPY --from=build-setup /docker/common.sh /common.sh
+COPY --from=build-setup /docker/mainnet/run.sh /run.sh
 
 RUN chmod a+x /run.sh
-
 
 EXPOSE 8080 8099
 
