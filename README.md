@@ -20,7 +20,7 @@ Mainnet-5 | 12020337     | 12609236
 Mainnet-6 | 12609237     | 13404173
 Mainnet-7 | 13404174     | 13950741
 
-### Testnet 
+### Devnet 
 
  Name      | Lowest block | Highest block 
 -----------|--------------|--------------
