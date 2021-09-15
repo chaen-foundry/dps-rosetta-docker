@@ -6,7 +6,7 @@ RUN apt-get -y install cmake zip sudo git
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.1
 ENV FLOW_GO_BRANCH=v0.21
 ENV RESTORE_INDEX_BRANCH=tags/v1.3.2
-ENV ROSETTA_DISPATCHER_BRANCH=m4ksio/rosetta-dispatcher-server
+ENV ROSETTA_DISPATCHER_BRANCH=master
 ENV DPS_LIVE_BRANCH=m4ksio/rosetta-wait
 
 RUN mkdir /dps /docker
