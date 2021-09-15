@@ -6,7 +6,7 @@ RUN apt-get -y install cmake zip sudo git
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.1
 ENV FLOW_GO_BRANCH=v0.21
 ENV RESTORE_INDEX_BRANCH=v1.3.2
-ENV ROSETTA_DISPATCHER_BRANCH=m4ksio/rosetta-dispatcher-server
+ENV ROSETTA_DISPATCHER_BRANCH=master
 ENV DPS_LIVE_BRANCH=m4ksio/rosetta-wait
 
 RUN mkdir /dps /docker
@@ -14,7 +14,7 @@ WORKDIR /dps
 
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build  \
-    git clone https://github.com/m4ksio/flow-dps /dps && \
+    git clone https://github.com/dapperlabs/flow-dps /dps && \
     git clone --branch $DPS_ROSETTA_DOCKER_BRANCH https://github.com/dapperlabs/dps-rosetta-docker /docker && \
     git clone --branch $FLOW_GO_BRANCH https://github.com/onflow/flow-go /dps/flow-go && \
     make -C /dps/flow-go crypto/relic/build #prebuild crypto dependency
