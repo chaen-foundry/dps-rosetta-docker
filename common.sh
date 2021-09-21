@@ -48,9 +48,10 @@ function live_data() {
   NODE_INFOS_FILE="$PUBLIC_ROOT_INFO_DIR/node-infos.pub.json"
   ROOT_PROTOCOL_STATE_SNAPSHOT_FILE="$PUBLIC_ROOT_INFO_DIR/root-protocol-state-snapshot.json"
 
+  DOWNLOAD_BASE_URL="$DOWNLOAD_BASE_URL/public-root-information"
   ROOT_CHECKPOINT_DOWNLOAD_URL="$DOWNLOAD_BASE_URL/root.checkpoint"
-  NODE_INFOS_DOWNLOAD_URL="$DOWNLOAD_BASE_URL/public-root-information/node-infos.pub.json"
-  ROOT_PROTOCOL_STATE_SNAPSHOT_DOWNLOAD_URL="$DOWNLOAD_BASE_URL/public-root-information/root-protocol-state-snapshot.json"
+  NODE_INFOS_DOWNLOAD_URL="$DOWNLOAD_BASE_URL/node-infos.pub.json"
+  ROOT_PROTOCOL_STATE_SNAPSHOT_DOWNLOAD_URL="$DOWNLOAD_BASE_URL/root-protocol-state-snapshot.json"
 
   echo "Checking Live $NETWORK_NAME data"
 
