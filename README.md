@@ -14,9 +14,9 @@ Canary 8v2 | 41318422     | Live
 
 ### Mainnet 
 
- Name      | Lowest block | Highest block 
------------|--------------|--------------
-Mainnet-13 | 18587478     | Live
+ Name      | DPS version | Flow Go version |Lowest block | Highest block 
+-----------|-------------|-----------------|-------------|--------------
+Mainnet-13 |    v1.4.0   |  v0.21.4        | 18587478    | Live
 
 ### Devnet 
 

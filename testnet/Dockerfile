@@ -3,29 +3,61 @@ FROM golang:1.17-buster AS build-setup
 RUN apt-get update
 RUN apt-get -y install cmake zip sudo git
 
-ENV DPS_ROSETTA_DOCKER_BRANCH=v0.1
-ENV FLOW_GO_BRANCH=v0.21
-ENV RESTORE_INDEX_BRANCH=v1.3.2
-ENV ROSETTA_DISPATCHER_BRANCH=master
-ENV DPS_LIVE_BRANCH=m4ksio/rosetta-wait
+ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
+ENV FLOW_DPS_BRANCH=v1.4.0
 
-RUN mkdir /dps /docker
+ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
+ENV DPS_ROSETTA_DOCKER_BRANCH=v0.21
+
+ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
+ENV FLOW_ROSETTA_BRANCH=wait
+
+ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
+ENV FLOW_GO_BRANCH=v0.21
+
+
+ENV ROSETTA_DISPATCHER_BRANCH=master
+
+RUN mkdir /dps /docker /flow-go /flow-rosetta
+
 WORKDIR /dps
+
+# clone repos and create links
+RUN git clone --branch FLOW_DPS_BRANCH $FLOW_DPS_REPO /dps
+RUN git clone --branch $DPS_ROSETTA_DOCKER_BRANCH $DPS_ROSETTA_DOCKER_REPO /docker
+RUN git clone --branch $FLOW_GO_BRANCH $FLOW_GO_REPO /flow-go
+RUN git clone --branch $FLOW_ROSETTA_BRANCH $DPS_ROSETTA_DOCKER_REPO /flow-rosetta
+
+RUN ln -s /flow-go /dps/flow-go
+RUN ln -s /flow-go /flow-rosetta/flow-go
 
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build  \
-    git clone https://github.com/dapperlabs/flow-dps /dps && \
-    git clone --branch $DPS_ROSETTA_DOCKER_BRANCH https://github.com/dapperlabs/dps-rosetta-docker /docker && \
-    git clone --branch $FLOW_GO_BRANCH https://github.com/onflow/flow-go /dps/flow-go && \
-    make -C /dps/flow-go crypto/relic/build #prebuild crypto dependency
+    make -C /flow-go crypto/relic/build #prebuild crypto dependency
 
 FROM build-setup AS build-live
 
 WORKDIR /dps
 RUN  --mount=type=cache,target=/go/pkg/mod \
      --mount=type=cache,target=/root/.cache/go-build  \
-     git checkout $DPS_LIVE_BRANCH &&  \
-     go build -o /dps-live-index -tags relic -ldflags "-extldflags -static" ./cmd/flow-dps-live && \
+     git checkout $FLOW_DPS_LIVE_BRANCH &&  \
+     go build -o /dps-live-index -tags relic -ldflags "-extldflags -static" ./cmd/flow-dps-live \
+     \
+
+FROM build-setup AS build-restore-index
+
+WORKDIR /dps
+RUN  --mount=type=cache,target=/go/pkg/mod \
+     --mount=type=cache,target=/root/.cache/go-build  \
+     go build -o /restore-index-snapshot -ldflags "-extldflags -static" ./cmd/restore-index-snapshot && \
+     chmod a+x /restore-index-snapshot
+
+
+FROM build-setup AS build-rosetta
+
+WORKDIR /flow-rosetta
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build  \
      go build -o /app-rosetta -ldflags "-extldflags -static" ./cmd/flow-rosetta-server
 
 ## Add the statically linked binary to a distroless image
@@ -35,11 +67,11 @@ RUN apt-get update
 RUN apt-get -y install supervisor wget
 
 COPY --from=build-live /dps-live-index /bin/dps-live-index
-COPY --from=build-live /app-rosetta /bin/rosetta-live
+COPY --from=build-rosetta /app-rosetta /bin/rosetta
 
 RUN chmod a+x  \
     /bin/dps-live-index \
-    /bin/rosetta-live 
+    /bin/rosetta
 
 COPY --from=build-setup /docker/testnet/supervisord.conf /supervisord.conf
 COPY --from=build-setup /docker/common.sh /common.sh
