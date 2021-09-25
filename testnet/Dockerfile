@@ -26,7 +26,7 @@ WORKDIR /dps
 RUN git clone --branch $FLOW_DPS_BRANCH $FLOW_DPS_REPO /dps
 RUN git clone --branch $DPS_ROSETTA_DOCKER_BRANCH $DPS_ROSETTA_DOCKER_REPO /docker
 RUN git clone --branch $FLOW_GO_BRANCH $FLOW_GO_REPO /flow-go
-RUN git clone --branch $FLOW_ROSETTA_BRANCH $DPS_ROSETTA_DOCKER_REPO /flow-rosetta
+RUN git clone --branch $FLOW_ROSETTA_BRANCH $FLOW_ROSETTA_REPO /flow-rosetta
 
 RUN ln -s /flow-go /dps/flow-go
 RUN ln -s /flow-go /flow-rosetta/flow-go
@@ -40,9 +40,8 @@ FROM build-setup AS build-live
 WORKDIR /dps
 RUN  --mount=type=cache,target=/go/pkg/mod \
      --mount=type=cache,target=/root/.cache/go-build  \
-     git checkout $FLOW_DPS_LIVE_BRANCH &&  \
-     go build -o /dps-live-index -tags relic -ldflags "-extldflags -static" ./cmd/flow-dps-live \
-     \
+     go build -o /dps-live-index -tags relic -ldflags "-extldflags -static" ./cmd/flow-dps-live && \
+     chmod a+x /dps-live-index
 
 FROM build-setup AS build-restore-index
 
@@ -58,7 +57,8 @@ FROM build-setup AS build-rosetta
 WORKDIR /flow-rosetta
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build  \
-     go build -o /app-rosetta -ldflags "-extldflags -static" ./cmd/flow-rosetta-server
+     go build -o /app-rosetta -ldflags "-extldflags -static" ./cmd/flow-rosetta-server && \
+    chmod a+x /app-rosetta
 
 ## Add the statically linked binary to a distroless image
 FROM ubuntu:latest as production
@@ -69,9 +69,9 @@ RUN apt-get -y install supervisor wget
 COPY --from=build-live /dps-live-index /bin/dps-live-index
 COPY --from=build-rosetta /app-rosetta /bin/rosetta
 
-RUN chmod a+x  \
-    /bin/dps-live-index \
-    /bin/rosetta
+#RUN chmod a+x  \
+#    /bin/dps-live-index \
+#    /bin/rosetta
 
 COPY --from=build-setup /docker/testnet/supervisord.conf /supervisord.conf
 COPY --from=build-setup /docker/common.sh /common.sh
