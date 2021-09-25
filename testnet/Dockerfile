@@ -23,7 +23,7 @@ RUN mkdir /dps /docker /flow-go /flow-rosetta
 WORKDIR /dps
 
 # clone repos and create links
-RUN git clone --branch FLOW_DPS_BRANCH $FLOW_DPS_REPO /dps
+RUN git clone --branch $FLOW_DPS_BRANCH $FLOW_DPS_REPO /dps
 RUN git clone --branch $DPS_ROSETTA_DOCKER_BRANCH $DPS_ROSETTA_DOCKER_REPO /docker
 RUN git clone --branch $FLOW_GO_BRANCH $FLOW_GO_REPO /flow-go
 RUN git clone --branch $FLOW_ROSETTA_BRANCH $DPS_ROSETTA_DOCKER_REPO /flow-rosetta
