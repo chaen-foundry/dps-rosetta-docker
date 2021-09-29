@@ -3,8 +3,9 @@ FROM golang:1.17-buster AS build-setup
 RUN apt-get update
 RUN apt-get -y install cmake zip sudo git
 
-ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
-ENV FLOW_DPS_BRANCH=v1.4.2
+#ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
+ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
+ENV FLOW_DPS_BRANCH=m4ksio/existing
 
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.21
