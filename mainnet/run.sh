@@ -12,7 +12,7 @@ source common.sh
 #past_data "mainnet-7" "https://storage.googleapis.com/flow-genesis-bootstrap/dps/mainnet7-snapshot.gz" "71df712108ca37cc03bfd7bb082195d445d13b45c3cb936778776683617b10cf"
 
 #live_data "mainnet-13"  "https://storage.googleapis.com/flow-genesis-bootstrap/mainnet-13-execution" "17f925739cb914036144555499dd98e2dfac787e3ab01711304ab5e459aed825"
-live_data "mainnet-14"  "https://storage.googleapis.com/flow-genesis-bootstrap/mainnet-14-execution" "17f925739cb914036144555499dd98e2dfac787e3ab01711304ab5e459aed825"
+live_data "mainnet-14"  "https://storage.googleapis.com/flow-genesis-bootstrap/mainnet-14-execution" "6e3fb38ce728ca3a18fac6f712641edb661880363ef4047e138d1c6ecf3db1be"
 
 
 /usr/bin/supervisord -c /supervisord.conf
