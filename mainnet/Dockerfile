@@ -9,13 +9,13 @@ ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
 ENV FLOW_DPS_BRANCH=m4ksio/existing
 
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
-ENV DPS_ROSETTA_DOCKER_BRANCH=v0.21
+ENV DPS_ROSETTA_DOCKER_BRANCH=v0.22
 
 ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
 ENV FLOW_ROSETTA_BRANCH=wait
 
 ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
-ENV FLOW_GO_BRANCH=v0.21
+ENV FLOW_GO_BRANCH=v0.22
 
 
 ENV ROSETTA_DISPATCHER_BRANCH=master
