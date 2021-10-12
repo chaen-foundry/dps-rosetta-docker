@@ -81,6 +81,6 @@ COPY --from=build-setup /docker/mainnet/run.sh /run.sh
 
 RUN chmod a+x /run.sh
 
-EXPOSE 8080 8099
+EXPOSE 8080 8099 9000
 
 CMD ["bash", "-x", "/run.sh"]
