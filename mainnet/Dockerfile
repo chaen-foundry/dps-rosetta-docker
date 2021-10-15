@@ -6,7 +6,7 @@ RUN apt-get -y install cmake zip sudo git
 #ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
 ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
 # v1.4.3 with some flag changes
-ENV FLOW_DPS_BRANCH=m4ksio/existing
+ENV FLOW_DPS_BRANCH=m4ksio/existing-v0.22
 
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.22-debug
@@ -36,6 +36,16 @@ RUN ln -s /flow-go /flow-rosetta/flow-go
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build  \
     make -C /flow-go crypto/relic/build #prebuild crypto dependency
+
+#FROM build-setup AS build-mainnet-13
+#
+#WORKDIR /dps
+#RUN  --mount=type=cache,target=/go/pkg/mod \
+#     --mount=type=cache,target=/root/.cache/go-build  \
+#     git checkout m4ksio/mainnet-9-proxy &&  \
+#     go build -o /app -ldflags "-extldflags -static" ./cmd/flow-rosetta-server && \
+#     chmod a+x /app
+#
 
 FROM build-setup AS build-live
 
