@@ -6,13 +6,15 @@ RUN apt-get -y install cmake zip sudo git
 #ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
 ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
 # v1.4.3 with some flag changes
-ENV FLOW_DPS_BRANCH=m4ksio/existing-v0.22
+#ENV FLOW_DPS_BRANCH=m4ksio/existing-v0.22
+ENV FLOW_DPS_BRANCH=8c47c895fecb87c8a0c157376df9ce70b01ec024
 
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.22-debug
 
 ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
-ENV FLOW_ROSETTA_BRANCH=wait
+#ENV FLOW_ROSETTA_BRANCH=wait
+ENV FLOW_ROSETTA_BRANCH=28810c8a632df2b3c46558254eccc16399927c44
 
 ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
 ENV FLOW_GO_BRANCH=v0.22
@@ -37,15 +39,14 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build  \
     make -C /flow-go crypto/relic/build #prebuild crypto dependency
 
-#FROM build-setup AS build-mainnet-13
-#
-#WORKDIR /dps
-#RUN  --mount=type=cache,target=/go/pkg/mod \
-#     --mount=type=cache,target=/root/.cache/go-build  \
-#     git checkout m4ksio/mainnet-9-proxy &&  \
-#     go build -o /app -ldflags "-extldflags -static" ./cmd/flow-rosetta-server && \
-#     chmod a+x /app
-#
+FROM build-setup AS build-server
+
+WORKDIR /dps
+RUN  --mount=type=cache,target=/go/pkg/mod \
+     --mount=type=cache,target=/root/.cache/go-build  \
+     go build -o /dps-server -tags relic -ldflags "-extldflags -static" ./cmd/flow-dps-server && \
+     chmod a+x /dps-server
+
 
 FROM build-setup AS build-live
 
@@ -79,6 +80,7 @@ RUN apt-get update
 RUN apt-get -y install supervisor wget
 
 COPY --from=build-live /dps-live-index /bin/dps-live-index
+COPY --from=build-server /dps-server /bin/dps-server
 COPY --from=build-rosetta /app-rosetta /bin/rosetta
 
 #RUN chmod a+x  \

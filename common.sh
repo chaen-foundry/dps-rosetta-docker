@@ -27,7 +27,7 @@ function past_data() {
 
     mkdir -p "$NETWORK_DIR"
 
-    /bin/restore-index-snapshot -c gzip -i "$INDEX_DIR" < "$TMP_FILE"
+    /bin/restore-index-snapshot -c zstd -i "$INDEX_DIR" < "$TMP_FILE"
     echo "$NETWORK_NAME data restored"
 
     rm "$TMP_FILE"
