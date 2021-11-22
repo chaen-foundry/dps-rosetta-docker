@@ -82,6 +82,7 @@ RUN apt-get -y install supervisor wget
 COPY --from=build-live /dps-live-index /bin/dps-live-index
 COPY --from=build-server /dps-server /bin/dps-server
 COPY --from=build-rosetta /app-rosetta /bin/rosetta
+COPY --from=build-restore-index /restore-index-snapshot /bin/restore-index-snapshot
 
 #RUN chmod a+x  \
 #    /bin/dps-live-index \
