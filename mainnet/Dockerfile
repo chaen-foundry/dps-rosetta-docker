@@ -6,8 +6,8 @@ RUN apt-get -y install cmake zip sudo git
 #ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
 ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
 # v1.4.3 with some flag changes
-ENV FLOW_DPS_BRANCH=m4ksio/existing-v0.22
-#ENV FLOW_DPS_BRANCH=m4ksio/balance-indexing
+#ENV FLOW_DPS_BRANCH=m4ksio/existing-v0.22
+ENV FLOW_DPS_BRANCH=m4ksio/balance-indexing
 
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.22-debug
