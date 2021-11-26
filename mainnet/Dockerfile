@@ -10,14 +10,14 @@ ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
 ENV FLOW_DPS_BRANCH=m4ksio/balance-indexing
 
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
-ENV DPS_ROSETTA_DOCKER_BRANCH=v0.22-debug
+ENV DPS_ROSETTA_DOCKER_BRANCH=v0.22-debug-live
 
 ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
 #ENV FLOW_ROSETTA_BRANCH=wait
 ENV FLOW_ROSETTA_BRANCH=staking-balance
 
 ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
-ENV FLOW_GO_BRANCH=v0.22
+ENV FLOW_GO_BRANCH=v0.22.10
 
 
 ENV ROSETTA_DISPATCHER_BRANCH=master
