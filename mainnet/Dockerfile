@@ -9,8 +9,8 @@ ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
 ENV FLOW_DPS_BRANCH=v0.23
 #ENV FLOW_DPS_BRANCH=v1.4.4
 
-ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
-ENV DPS_ROSETTA_DOCKER_BRANCH=v0.23
+ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/chaen-foundry/dps-rosetta-docker"
+ENV DPS_ROSETTA_DOCKER_BRANCH=v0.23.1
 
 ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
 ENV FLOW_ROSETTA_BRANCH=wait
