@@ -5,8 +5,7 @@ RUN apt-get -y install cmake zip sudo git
 
 #ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
 ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
-ENV FLOW_DPS_BRANCH=v0.23
-#ENV FLOW_DPS_BRANCH=v0.24
+ENV FLOW_DPS_BRANCH=v0.24
 
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/chaen-foundry/dps-rosetta-docker"
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.24
@@ -15,8 +14,7 @@ ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
 ENV FLOW_ROSETTA_BRANCH=wait
 
 ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
-ENV FLOW_GO_BRANCH=v0.23.3
-#ENV FLOW_GO_BRANCH=v0.24.4
+ENV FLOW_GO_BRANCH=v0.24.4
 
 
 ENV ROSETTA_DISPATCHER_BRANCH=master
