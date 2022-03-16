@@ -1,28 +1,4 @@
-## Docker packaging of Flow Rosetta API implementation
-
-This is a work in progress and subject to change. 
-
-## Supported Flow networks
-
-Use `Dockerfile` from a directory corresponding to chosen network.  
-
-### Canary
-
- Name      | Lowest block | Highest block
------------|--------------|---------------
-Canary 8v2 | 41318422     | Live
-
-### Mainnet 
-
- Name      | DPS version | Flow Go version |Lowest block | Highest block 
------------|-------------|-----------------|-------------|--------------
-Mainnet-13 |    v1.4.0   |  v0.21.4        | 18587478    | Live
-
-### Devnet 
-
- Name      | Lowest block | Highest block 
------------|--------------|--------------
-Testnet-27 |              | Live
+## 🌊 🛥️ Docker packaging of Flow Rosetta API implementation
 
 ## Building and running
 

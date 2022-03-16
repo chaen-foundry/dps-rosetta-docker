@@ -3,17 +3,17 @@ FROM golang:1.17-buster AS build-setup
 RUN apt-get update
 RUN apt-get -y install cmake zip sudo git
 
-ENV FLOW_DPS_REPO="https://github.com/optakt/flow-dps"
-ENV FLOW_DPS_BRANCH=v1.4.0
+ENV FLOW_DPS_REPO="https://github.com/dapperlabs/flow-dps"
+ENV FLOW_DPS_BRANCH=v0.24
 
-ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/dapperlabs/dps-rosetta-docker"
-ENV DPS_ROSETTA_DOCKER_BRANCH=v0.21
+ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/chaen-foundry/dps-rosetta-docker"
+ENV DPS_ROSETTA_DOCKER_BRANCH=v0.24
 
 ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
 ENV FLOW_ROSETTA_BRANCH=wait
 
 ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
-ENV FLOW_GO_BRANCH=v0.21
+ENV FLOW_GO_BRANCH=v0.24.7
 
 
 ENV ROSETTA_DISPATCHER_BRANCH=master
@@ -51,6 +51,14 @@ RUN  --mount=type=cache,target=/go/pkg/mod \
      go build -o /restore-index-snapshot -ldflags "-extldflags -static" ./cmd/restore-index-snapshot && \
      chmod a+x /restore-index-snapshot
 
+FROM build-setup AS build-create-index
+
+WORKDIR /dps
+RUN  --mount=type=cache,target=/go/pkg/mod \
+     --mount=type=cache,target=/root/.cache/go-build  \
+     go build -o /create-index-snapshot -ldflags "-extldflags -static" ./cmd/create-index-snapshot && \
+     chmod a+x /create-index-snapshot
+
 
 FROM build-setup AS build-rosetta
 
@@ -60,8 +68,13 @@ RUN --mount=type=cache,target=/go/pkg/mod \
      go build -o /app-rosetta -ldflags "-extldflags -static" ./cmd/flow-rosetta-server && \
     chmod a+x /app-rosetta
 
+
+FROM ubuntu:latest AS production-create-index
+COPY --from=build-create-index /create-index-snapshot /create-index-snapshot
+ENTRYPOINT ["/create-index-snapshot"]
+
 ## Add the statically linked binary to a distroless image
-FROM ubuntu:latest as production
+FROM ubuntu:latest AS production
 
 RUN apt-get update
 RUN apt-get -y install supervisor wget
@@ -73,9 +86,9 @@ COPY --from=build-rosetta /app-rosetta /bin/rosetta
 #    /bin/dps-live-index \
 #    /bin/rosetta
 
-COPY --from=build-setup /docker/testnet/supervisord.conf /supervisord.conf
+COPY --from=build-setup /docker/mainnet/supervisord.conf /supervisord.conf
 COPY --from=build-setup /docker/common.sh /common.sh
-COPY --from=build-setup /docker/testnet/run.sh /run.sh
+COPY --from=build-setup /docker/mainnet/run.sh /run.sh
 
 RUN chmod a+x /run.sh
 
