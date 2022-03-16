@@ -14,7 +14,7 @@ ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
 ENV FLOW_ROSETTA_BRANCH=wait
 
 ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
-ENV FLOW_GO_BRANCH=v0.24.4
+ENV FLOW_GO_BRANCH=v0.24.7
 
 
 ENV ROSETTA_DISPATCHER_BRANCH=master
