@@ -10,8 +10,10 @@ ENV FLOW_DPS_BRANCH=v0.24
 ENV DPS_ROSETTA_DOCKER_REPO="https://github.com/chaen-foundry/dps-rosetta-docker"
 ENV DPS_ROSETTA_DOCKER_BRANCH=v0.24
 
-ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
-ENV FLOW_ROSETTA_BRANCH=wait
+# ENV FLOW_ROSETTA_REPO="https://github.com/dapperlabs/flow-rosetta"
+# ENV FLOW_ROSETTA_BRANCH=wait
+ENV FLOW_ROSETTA_REPO="https://github.com/foundryservices/flow-rosetta"
+ENV FLOW_ROSETTA_BRANCH=master
 
 ENV FLOW_GO_REPO="https://github.com/onflow/flow-go"
 ENV FLOW_GO_BRANCH=v0.24.7
